@@ -1,0 +1,71 @@
+dataset: nq
+display_name: Natural Questions Open
+source_subdir: NQ
+default_workdir: experiments/nq/runs/default
+completeness: partial_9_step_pipeline
+recommended_for_refactor: false
+resources: []
+steps:
+  - number: 1
+    name: bm25_retrieval
+    kind: retrieval
+    script: 1-bm25.py
+    multi_key: false
+    outputs: [bm25-nqopen.txt, query_map.json]
+  - number: 2
+    name: llm_rerank
+    kind: llm_rerank
+    script: 2-gptrerank.py
+    multi_key: true
+    outputs: [reranked_gpt3.5.json]
+  - number: 3
+    name: generate_base
+    kind: llm_generation
+    script: 3-generate.py
+    multi_key: true
+    outputs: [answers_nq_base.json]
+  - number: 4
+    name: generate_plan
+    kind: llm_plan_generation
+    script: 4-generate-plan.py
+    multi_key: true
+    outputs: [answers_plan.json, answers_plan.jsonl]
+  - number: 5
+    name: evaluate_plan
+    kind: evaluation
+    script: 5-eval.py
+    multi_key: false
+    outputs: [eval_nq_plan.json, result_nq_plan.json, bad_cases_nq.json, good_cases_nq.json]
+  - number: 6
+    name: build_rl_train
+    kind: data_build
+    script: 6-build.py
+    multi_key: false
+    outputs: [RL_trainNQ.json]
+  - number: 7
+    name: prepare_reflection_data
+    kind: reflection_data_generation
+    script: 7-prepare_reflection_data.py
+    multi_key: true
+    outputs: [reflection_dataNQ_v1.json, reflection_dataNQ_v2.json]
+  - number: 8
+    name: train_reflection_model
+    kind: local_training
+    script: 8-train_rl.py
+    multi_key: false
+    outputs: [reflection_dataNQ_combined.json, gemma-2-2b-reflection-final]
+    note: Existing NQ path is older and uses a PPO-style training branch.
+  - number: 9
+    name: infer_reflection
+    kind: mixed_reflection_inference
+    script: 9-infer_reflection.py
+    multi_key: true
+    outputs: [answers_reflection_refined_NQ.json]
+    note: Existing NQ path stops here and is not aligned with MARCO's 10/11 split.
+  - number: 10
+    name: generate_iterative_answers
+    kind: llm_final_generation
+    script: 10-reflect-iterative.py
+    multi_key: true
+    outputs: [answers_final.json, metrics_summary.json]
+

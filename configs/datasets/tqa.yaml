@@ -1,0 +1,71 @@
+dataset: tqa
+display_name: TriviaQA
+source_subdir: TQA
+default_workdir: experiments/tqa/runs/default
+completeness: partial_9_step_pipeline
+recommended_for_refactor: false
+resources: []
+steps:
+  - number: 1
+    name: bm25_retrieval
+    kind: retrieval
+    script: 1-bm25.py
+    multi_key: false
+    outputs: [bm25-triviaqa.txt]
+  - number: 2
+    name: llm_rerank
+    kind: llm_rerank
+    script: 2-rerank.py
+    multi_key: true
+    outputs: [rerankedTQA_gpt3.5.json]
+  - number: 3
+    name: generate_base
+    kind: llm_generation
+    script: 3-generate.py
+    multi_key: true
+    outputs: [answersTQA_base.json]
+  - number: 4
+    name: generate_plan
+    kind: llm_plan_generation
+    script: 4-generate-plan.py
+    multi_key: true
+    outputs: [answers_plan.json, answers_plan.jsonl]
+  - number: 5
+    name: evaluate_plan
+    kind: evaluation
+    script: 5-evaluate.py
+    multi_key: false
+    outputs: [evalTQA_plan.json, resultTQA_plan.json, bad_casesTQA.json, good_casesTQA.json]
+  - number: 6
+    name: build_rl_train
+    kind: data_build
+    script: 6-build.py
+    multi_key: false
+    outputs: [RL_trainTQA.json]
+  - number: 7
+    name: prepare_reflection_data
+    kind: reflection_data_generation
+    script: 7-prepare_reflection_data.py
+    multi_key: true
+    outputs: [reflection_dataTQA_v1.json, reflection_dataTQA_v2.json]
+  - number: 8
+    name: train_reflection_model
+    kind: local_training
+    script: 8-train_rl.py
+    multi_key: false
+    outputs: [reflection_dataTQA_combined.json, gemma-2-2b-reflection-final]
+    note: Existing TQA path is older and uses a PPO-style training branch.
+  - number: 9
+    name: infer_reflection
+    kind: mixed_reflection_inference
+    script: 9-infer_reflection.py
+    multi_key: true
+    outputs: [answers_reflection_refined_TQA.json]
+    note: Existing TQA path stops here and is not aligned with MARCO's 10/11 split.
+  - number: 10
+    name: generate_iterative_answers
+    kind: llm_final_generation
+    script: 10-reflect-iterative.py
+    multi_key: true
+    outputs: [answers_final.json, metrics_summary.json]
+

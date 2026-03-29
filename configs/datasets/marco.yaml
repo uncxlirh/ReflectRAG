@@ -1,0 +1,76 @@
+dataset: marco
+display_name: MS MARCO
+source_subdir: MARCO
+default_workdir: experiments/marco/runs/default
+completeness: full_11_step_pipeline
+recommended_for_refactor: true
+resources:
+  - source: prompt
+    target: prompt
+steps:
+  - number: 1
+    name: bm25_retrieval
+    kind: retrieval
+    script: 1-bm25.py
+    multi_key: false
+    outputs: [bm25-msmarcoqa.txt]
+  - number: 2
+    name: llm_rerank
+    kind: llm_rerank
+    script: 2-gptrerank.py
+    multi_key: true
+    outputs: [reranked_gpt3.5.json]
+  - number: 3
+    name: generate_base
+    kind: llm_generation
+    script: 3-generate.py
+    multi_key: true
+    outputs: [answers_base.json, answers_base.jsonl]
+  - number: 4
+    name: generate_plan
+    kind: llm_plan_generation
+    script: 4-generate-plan-new.py
+    multi_key: true
+    outputs: [answers_plan.json, answers_plan.jsonl]
+  - number: 5
+    name: evaluate_plan
+    kind: evaluation
+    script: 5-evaluation.py
+    multi_key: false
+    outputs: [eval_plan.json, result_plan.json, bad_cases_plan.json, good_cases_plan.json]
+  - number: 6
+    name: build_rl_train
+    kind: data_build
+    script: 6-build.py
+    multi_key: false
+    outputs: [RL_train.json]
+  - number: 7
+    name: prepare_reflection_data
+    kind: reflection_data_generation
+    script: 7-prepare_reflection_data.py
+    multi_key: true
+    outputs: [reflection_data_v1.json, reflection_data_v2.json]
+  - number: 8
+    name: init_reflection_model
+    kind: model_init
+    script: 8-load_gemma.py
+    multi_key: false
+    outputs: [gemma-2-2b-lora-init]
+  - number: 9
+    name: train_grpo_reflector
+    kind: local_training
+    script: 9-new-GRPO.py
+    multi_key: false
+    outputs: [gemma-2-2b-reflection-final]
+  - number: 10
+    name: iterative_reflect_and_generate_final
+    kind: local_reflection_inference
+    script: 10-reflect-iterative.py
+    multi_key: false
+    outputs: [answers_final.json, metrics_summary.json]
+  - number: 11
+    name: generate_final_answers
+    kind: llm_final_generation
+    script: 11-generate-final.py
+    multi_key: true
+    outputs: [answers_final.json, metrics_summary.json]
