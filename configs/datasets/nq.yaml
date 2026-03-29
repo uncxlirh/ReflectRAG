@@ -54,7 +54,7 @@ steps:
     script: 8-train_rl.py
     multi_key: false
     outputs: [reflection_dataNQ_combined.json, gemma-2-2b-reflection-final]
-    note: Existing NQ path is older and uses a PPO-style training branch.
+    note: Existing NQ path uses a separate dataset-specific training branch.
   - number: 9
     name: infer_reflection
     kind: mixed_reflection_inference
@@ -68,4 +68,3 @@ steps:
     script: 10-reflect-iterative.py
     multi_key: true
     outputs: [answers_final.json, metrics_summary.json]
-
