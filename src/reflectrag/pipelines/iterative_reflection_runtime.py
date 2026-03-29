@@ -72,7 +72,7 @@ def parse_runtime_args(dataset_name: str, adapter_dir_default: str) -> RuntimeAr
         base_model="google/gemma-2-2b-it",
         adapter_dir=os.getenv("ADAPTER_DIR", adapter_dir_default),
         model_gpt=os.getenv("MODEL_GPT", "gpt-3.5-turbo"),
-        base_url=os.getenv("OPENAI_BASE_URL", "https://apic.littlewheat.com/v1"),
+        base_url=os.getenv("OPENAI_BASE_URL", "https://api.openai.com/v1"),
         iterations=parsed.iterations,
         disable_filtering=parsed.disable_filtering,
         disable_verifier=parsed.disable_verifier,

@@ -50,7 +50,7 @@ OUTPUT_FILE_V1 = "reflection_data_v1.json"
 OUTPUT_FILE_V2 = "reflection_data_v2.json"
 
 # OpenAI 协议 Endpoint（默认对齐 test/test.py；可用环境变量覆盖）
-BASE_URL = os.getenv("OPENAI_BASE_URL", "https://apic.littlewheat.com/v1")
+BASE_URL = os.getenv("OPENAI_BASE_URL", "https://api.openai.com/v1")
 
 # 稳定性设置（保持）
 os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:True"

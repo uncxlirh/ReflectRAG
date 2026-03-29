@@ -21,7 +21,7 @@ _tel = StepTelemetry("3-generate")
 # 配置区域
 ############################################################################
 # OpenAI 协议 Endpoint（默认对齐 test/test.py；可用环境变量覆盖）
-BASE_URL = os.getenv("OPENAI_BASE_URL", "https://apic.littlewheat.com/v1")
+BASE_URL = os.getenv("OPENAI_BASE_URL", "https://api.openai.com/v1")
 MODEL = os.getenv("PIPELINE_MODEL", "gpt-3.5-turbo")
 TEMPERATURE = 0.0
 MAX_RETRIES = 4

@@ -209,4 +209,3 @@ dependencies:
       - xxhash==3.5.0
       - yarl==1.18.3
       - zlib-state==0.1.9
-prefix: /home/chenxuanhe/anaconda3/envs/rgpt

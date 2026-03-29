@@ -37,7 +37,7 @@ MAX_WORKERS = int(os.getenv("MAX_WORKERS", "5"))
 MAX_ITEMS = int(os.getenv("MAX_ITEMS", "0"))
 
 # OpenAI 协议 Endpoint（默认对齐 test/test.py；可用环境变量覆盖）
-BASE_URL = os.getenv("OPENAI_BASE_URL", "https://apic.littlewheat.com/v1")
+BASE_URL = os.getenv("OPENAI_BASE_URL", "https://api.openai.com/v1")
 
 # 多 Key：环境变量 OPENAI_API_KEYS="k1,k2,k3"
 def _load_api_keys() -> list[str]:

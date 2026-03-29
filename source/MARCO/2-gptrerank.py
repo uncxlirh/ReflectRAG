@@ -16,7 +16,7 @@ _tel = StepTelemetry("2-gptrerank")
 os.environ["CUDA_VISIBLE_DEVICES"] = ""
 
 # OpenAI 协议 Endpoint（默认对齐 test/test.py；可用环境变量覆盖）
-BASE_URL = os.getenv("OPENAI_BASE_URL", "https://apic.littlewheat.com/v1")
+BASE_URL = os.getenv("OPENAI_BASE_URL", "https://api.openai.com/v1")
 
 def _load_api_keys() -> list[str]:
     raw = os.getenv("OPENAI_API_KEYS", "").strip()

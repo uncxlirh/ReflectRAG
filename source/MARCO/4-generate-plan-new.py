@@ -20,7 +20,7 @@ _tel = StepTelemetry("4-generate-plan")
 ############################################################################
 # 配置（安全化 + 稳健默认）
 ############################################################################
-BASE_URL = os.getenv("OPENAI_BASE_URL", "https://apic.littlewheat.com/v1")
+BASE_URL = os.getenv("OPENAI_BASE_URL", "https://api.openai.com/v1")
 MODEL = os.getenv("PLAN_MODEL", "gpt-3.5-turbo")
 def _load_api_keys() -> List[str]:
     raw = os.getenv("OPENAI_API_KEYS", "").strip()

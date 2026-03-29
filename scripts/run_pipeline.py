@@ -43,7 +43,7 @@ def build_parser() -> argparse.ArgumentParser:
     rp.add_argument("--keys-file", default="", help="Optional API key file override.")
     rp.add_argument("--base-url", default="", help="OpenAI-compatible base URL override.")
     rp.add_argument("--profile", default="", choices=available_profiles(), help="Optional run profile from configs/runs.")
-    rp.add_argument("--source-root", default="", help="Override source tree root. Defaults to rankfusion.")
+    rp.add_argument("--source-root", default="", help="Override source tree root.")
     rp.add_argument("--dry-run", action="store_true", help="Print what would run without executing it.")
     rp.add_argument("--refresh-resources", action="store_true", help="Re-copy source-side resources into the workdir.")
     rp.add_argument("--keep-going", action="store_true", help="Continue after failed steps.")

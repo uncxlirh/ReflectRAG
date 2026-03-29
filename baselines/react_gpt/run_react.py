@@ -22,7 +22,7 @@ if str(SRC) not in sys.path:
 from reflectrag.common.baseline_api_pool import ChatKeyPool, mask_key, probe_working_keys
 
 # ── config ───────────────────────────────────────────────────────
-BASE_URL     = os.getenv("OPENAI_BASE_URL", "https://apic.littlewheat.com/v1")
+BASE_URL     = os.getenv("OPENAI_BASE_URL", "https://api.openai.com/v1")
 MODEL        = os.getenv("OPENAI_MODEL", "gpt-3.5-turbo")
 KEYS_FILE    = os.getenv("OPENAI_API_KEYS_FILE",
                           str(Path(__file__).resolve().parents[2] / ".secrets" / "openai_api_keys.txt"))
